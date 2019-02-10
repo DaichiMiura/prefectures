@@ -3,24 +3,24 @@ const L = 60;
 type pr  = packed array[1..L] of char;
      all = record ename : pr;
                   jname : pr;
-                  esho : pr;
-                  jsho : pr;
-                  pop : pr;
-                  area : pr;
+                  esho  : pr;
+                  jsho  : pr;
+                  pop   : pr;
+                  area  : pr;
                   end;         
      table = array[1..48] of all ;
 var  a:table; v,w:pr;
-     pos : integer;
+     pos:integer;
 
-function nuki(x:pr ; k : integer):pr;
+function nuki(x:pr; k:integer):pr;
 var pos,i,num,xL:integer; y:pr ;
 begin
   xL := L;
-  pos := 1; num:=0; y:='';
+  pos := 1; num := 0; y := '';
   while (num < k-1)and(pos <= xL) do
-  begin if x[pos]=',' then num:= num + 1; pos := pos + 1;end;
+  begin if x[pos] = ',' then num := num + 1; pos := pos + 1;end;
   i := pos;
-  while (x[i]<>',')and(i <= xL) do begin y[i - pos +1]:= x[i];
+  while (x[i] <> ',')and(i <= xL) do begin y[i - pos +1] := x[i];
   i := i + 1; end;
   nuki := y;
 end;
@@ -33,15 +33,15 @@ begin
   assign(fp,'data_utf-8.csv'); reset(fp);
   while true do
    begin
-    s:='';
+    s := '';
     readln(fp,s);
-    if s[1] ='%' then goto 99;   
+    if s[1] = '%' then goto 99;   
         a[i].ename:= nuki(s,1) ;
         a[i].jname:= nuki(s,2) ;
-        a[i].esho:= nuki(s,3) ;
-        a[i].jsho:= nuki(s,4) ;
-        a[i].pop:= nuki(s,5) ;
-        a[i].area:= nuki(s,6) ;
+        a[i].esho := nuki(s,3) ;
+        a[i].jsho := nuki(s,4) ;
+        a[i].pop  := nuki(s,5) ;
+        a[i].area := nuki(s,6) ;
         i := i + 1;
      end;
 99:
@@ -49,12 +49,12 @@ end;
 
 procedure shuturyoku(i:integer);
 begin
-  write(a[i].ename,' ');
-  write(a[i].jname,' ');
-  write(a[i].esho,' ');
-  write(a[i].jsho,' ');
-  write(a[i].pop,' ');
-  write(a[i].area,' ');  
+  write(a[i].ename, ' ');
+  write(a[i].jname, ' ');
+  write(a[i].esho, ' ');
+  write(a[i].jsho, ' ');
+  write(a[i].pop, ' ');
+  write(a[i].area, ' ');  
   writeln;
 end;
 
@@ -68,18 +68,18 @@ end;
 procedure swap(m,n:integer);
 var b : all;
 begin
-b :=a[m];
-a[m]:=a[n];
-a[n]:=b;
+b    := a[m];
+a[m] := a[n];
+a[n] := b;
 end;
 
 procedure enameseiretu;
 var i , j , minpos:integer;
 begin
-  for i:=1 to 46 do
+  for i := 1 to 46 do
   begin
    minpos := i;
-    for j :=i+1 to 47 do
+    for j := i + 1 to 47 do
       if a[j].ename < a[minpos].ename then minpos := j;
     swap(i,minpos);
    end;
@@ -89,58 +89,58 @@ procedure enamesearch(target:pr);
  var hi,mid,lo:integer;
      found:boolean;
 begin
- lo:=1; hi:=47;
- while lo<=hi do
+ lo := 1; hi := 47;
+ while lo <= hi do
  begin
-   mid :=(lo+hi) div 2;
-   if target<=a[mid].ename then hi:=mid-1;
-   if target>=a[mid].ename then lo:=mid+1;
+   mid := (lo + hi) div 2;
+   if target <= a[mid].ename then hi := mid-1;
+   if target >= a[mid].ename then lo := mid+1;
  end;
- found := (lo=hi+2);
- pos:=lo-1;
-  if found = true then  shuturyoku(pos)
-                else begin write('データが見つかりません');writeln; 
+ found := (lo = hi + 2);
+ pos := lo- 1;
+  if found = true then shuturyoku(pos)
+                else begin write('データが見つかりません'); writeln; 
   end;
 end;
 
 procedure eshoseiretu;
-var i , j , minpos:integer;
+var i, j, minpos:integer;
 begin
-  for i:=1 to 46 do
+  for i := 1 to 46 do
   begin
    minpos := i;
-    for j :=i+1 to 47 do
+    for j := i + 1 to 47 do
       if a[j].esho < a[minpos].esho then minpos := j;
-    swap(i,minpos);
+    swap(i, minpos);
    end;
 end;
 
 procedure eshosearch(target:pr);
- var hi,mid,lo: integer;
+ var hi, mid, lo:integer;
      found:boolean;
 begin
- lo:=1; hi:=47;
- while lo<=hi do
+ lo := 1; hi := 47;
+ while lo <= hi do
  begin
-   mid :=(lo+hi) div 2;
-   if target<=a[mid].esho then hi:=mid-1;
-   if target>=a[mid].esho then lo:=mid+1;
+   mid := (lo + hi) div 2;
+   if target <= a[mid].esho then hi := mid-1;
+   if target >= a[mid].esho then lo := mid+1;
  end;
- found := (lo=hi+2);
- pos:=lo-1;
- if found = true then  shuturyoku(pos)
-                else begin write('データ見つからない');writeln;
+ found := (lo = hi + 2);
+ pos := lo - 1;
+ if found = true then shuturyoku(pos)
+                else begin write('データ見つからない'); writeln;
  end;
 end;
 
-function nagasa(x:pr) : integer;
-var i : integer;
+function nagasa(x:pr):integer;
+var i:integer;
 begin
-  i:=1; while x[i]<>chr(0) do i:=i+1;
-    nagasa :=i-1;
+  i := 1; while x[i] <> chr(0) do i := i + 1;
+    nagasa := i - 1;
 end;
 
-function henkan(s:pr): integer;
+function henkan(s:pr):integer;
 var i,j : integer;
 begin
   j:=0; for i:= 1 to nagasa(s) do j:= j*10+ord(s[i])-48;
@@ -207,17 +207,17 @@ function kakikomi(a,b:pr):pr;
 var m : pr; 
     i : integer;
 begin
-m := a; m[nagasa(a)+1] :=',';
-for i := 1 to nagasa(b)+1 do
-m[nagasa(a)+ 1 + i]:= b[i];
+m := a; m[nagasa(a) + 1] := ',';
+for i := 1 to nagasa(b) + 1 do
+m[nagasa(a) + 1 + i] := b[i];
 kakikomi := m;
 end;
 
 procedure uwagaki;
-var s : pr; i:integer;
-    fp : text;
+var s:pr; i:integer;
+    fp:text;
 begin
- assign(fp,'data_utf-8.csv');
+ assign(fp, 'data_utf-8.csv');
  rewrite(fp); append(fp);
  a[48].ename:='%%%%%%';
  a[48].jname:=' ';
@@ -239,7 +239,7 @@ writeln('上書き保存しました。');
 end;
 
 procedure menu;
-var n: integer;
+var n:integer;
 begin
 writeln('[メニュー]');
 writeln('1）全都道府県のデータ列挙');
@@ -251,18 +251,18 @@ writeln('6）人口修正');
 writeln('7）最初から');
 writeln('8）上書き保存');
 writeln('9）終了');
-write('操作 :',' ');readln(n);
-if n=1 then begin zenbu; menu end;
-if n=2 then begin enameseiretu;writeln('都道府県名は？');readln(w) ;
+write('操作 :',' '); readln(n);
+if n = 1 then begin zenbu; menu end;
+if n = 2 then begin enameseiretu; writeln('都道府県名は？'); readln(w) ;
                   enamesearch(w); menu end;
-if n=3 then begin eshoseiretu;writeln('県庁所在地名は？');readln(w);
+if n = 3 then begin eshoseiretu; writeln('県庁所在地名は？'); readln(w);
                   eshosearch(w); menu end;
-if n=4 then begin popran; menu end;
-if n=5 then begin arearan; menu end;
-if n=6 then begin shusei; menu end; 
-if n=7 then begin writeln('リロード完了');yomikomi; menu end;
-if n=8 then begin uwagaki; menu;end;
-if n=9 then writeln ;
+if n = 4 then begin popran; menu end;
+if n = 5 then begin arearan; menu end;
+if n = 6 then begin shusei; menu end; 
+if n = 7 then begin writeln('リロード完了');yomikomi; menu end;
+if n = 8 then begin uwagaki; menu; end;
+if n = 9 then writeln;
 end;
 
 begin
